@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Random CSV Text Example</title>
+  <style>
+    /* Styling for the text box */
+    #textBox {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 300px;
+      height: 100px;
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    // This async function fetches the CSV file, picks a random line, and displays it in the box
+    async function displayText() {
+      try {
+        // Fetch the CSV file (make sure texts.csv is in the same directory as this HTML file)
+        const response = await fetch('texts.csv');
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const csvText = await response.text();
+        // Split the CSV text into lines, trim whitespace, and filter out empty lines
+        const lines = csvText.split('\n').map(line => line.trim()).filter(line => line !== '');
+        // Pick a random line
+        const randomIndex = Math.floor(Math.random() * lines.length);
+        const selectedText = lines[randomIndex];
+        // Display the selected text in the text box
+        document.getElementById("textBox").innerHTML = selectedText;
+      } catch (error) {
+        console.error("Error fetching or processing CSV file:", error);
+        document.getElementById("textBox").innerHTML = "Error loading text.";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>My Page Title</h1>
+  <p>This is some introductory text displayed on the page.</p>
+  <button onclick="displayText()">Show Random Text</button>
+  <div id="textBox"></div>
+  <p>This is additional text that always appears below the box.</p>
+</body>
+</html>
