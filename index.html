@@ -15,7 +15,7 @@
     }
   </style>
   <script>
-    // This async function fetches the CSV file, picks a random line, and displays it in the box
+    // This async function fetches the CSV file, picks a random line, removes a leading comma (if any), and displays it in the box
     async function displayText() {
       try {
         // Fetch the CSV file (make sure texts.csv is in the same directory as this HTML file)
@@ -27,8 +27,9 @@
         // Split the CSV text into lines, trim whitespace, and filter out empty lines
         const lines = csvText.split('\n').map(line => line.trim()).filter(line => line !== '');
         // Pick a random line
-        const randomIndex = Math.floor(Math.random() * lines.length);
-        const selectedText = lines[randomIndex];
+        let selectedText = lines[Math.floor(Math.random() * lines.length)];
+        // Remove a leading comma, if present
+        selectedText = selectedText.replace(/^,/, '');
         // Display the selected text in the text box
         document.getElementById("textBox").innerHTML = selectedText;
       } catch (error) {
@@ -46,3 +47,4 @@
   <p>This is additional text that always appears below the box.</p>
 </body>
 </html>
+
